@@ -15,6 +15,8 @@
 
 require_once 'vendor/autoload.php';
 
+use Shopeo\CompleteTheLook\CompleteTheLookShortCode;
+
 if (!defined('ABSPATH')) {
     exit();
 }
@@ -57,3 +59,19 @@ if (!function_exists('complete_the_look_load_textdomain')) {
 }
 
 add_action('init', 'complete_the_look_load_textdomain');
+
+$complete_the_look_short_code = new CompleteTheLookShortCode();
+
+if (!function_exists('complete_the_look_scripts')) {
+    function complete_the_look_scripts()
+    {
+        $plugin_data = get_plugin_data(__FILE__);
+        $version = '1.0.0';
+        if (is_array($plugin_data) && array_key_exists('Version', $plugin_data)) {
+            $version = $plugin_data['Version'];
+        }
+        wp_enqueue_style('complete-the-look-plugin-style', plugin_dir_url(__FILE__) . '/assets/app.css', array(), $version);
+        wp_enqueue_script('complete-the-look-plugin-script', plugin_dir_url(__FILE__) . '/assets/app.js', array('jquery'), $version);
+    }
+}
+add_action('wp_enqueue_scripts', 'complete_the_look_scripts');
