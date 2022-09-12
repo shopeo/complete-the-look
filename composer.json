@@ -1,0 +1,16 @@
+{
+  "name": "shopeo/complete-the-look",
+  "autoload": {
+    "psr-4": {
+      "Shopeo\\CompleteTheLook\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "shopeo",
+      "email": "hello@shopeo.cn",
+      "homepage": "https://www.shopeo.cn"
+    }
+  ],
+  "require": {}
+}
