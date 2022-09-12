@@ -72,6 +72,7 @@ if (!function_exists('complete_the_look_scripts')) {
         }
         wp_enqueue_style('complete-the-look-plugin-style', plugin_dir_url(__FILE__) . '/assets/app.css', array(), $version);
         wp_enqueue_script('complete-the-look-plugin-script', plugin_dir_url(__FILE__) . '/assets/app.js', array('jquery'), $version);
+        wp_localize_script('complete-the-look-plugin-script', 'complete_the_look_plugin_ajax', array('ajax_url' => admin_url('admin-ajax.php')));
     }
 }
 add_action('wp_enqueue_scripts', 'complete_the_look_scripts');
