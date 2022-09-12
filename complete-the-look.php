@@ -114,3 +114,25 @@ if (!function_exists('wd_search_by_sku')) {
 
 add_action('wp_ajax_wd_search_by_sku', 'wd_search_by_sku');
 add_action('wp_ajax_nopriv_wd_search_by_sku', 'wd_search_by_sku');
+
+if (!function_exists('wd_product_by_id')) {
+    function wd_product_by_id()
+    {
+        $product_id = $_POST['product_id'];
+        $target_id = $_POST['target_id'];
+        $product = new WC_Product($product_id);
+        $body = '<div id="' . $target_id . '" class="wd_product" data-product-id="' . $product->get_id() . '" data-sku="' . $product->get_sku() . '">';
+        $body .= $product->get_image();
+        $body .= '<div class="wd_product_info">';
+        $body .= '<div class="wd_product_name">' . $product->get_name() . '</div>';
+        $body .= '<div class="wd_product_image">' . $product->get_image() . '</div>';
+        $body .= '<div class="wd_product_price">' . $product->get_price_html() . '</div>';
+        $body .= '<div class="wd_product_cart_btn"><button class="wd_add_to_cart_btn" data-product-id="' . $product->get_id() . '" data-sku="' . $product->get_sku() . '">' . __('Add to cart', 'complete-the-look') . '</button></div>';
+        $body .= '</div>';
+        $body .= '</div>';
+        wp_send_json(array('product' => $body));
+    }
+}
+
+add_action('wp_ajax_wd_product_by_id', 'wd_product_by_id');
+add_action('wp_ajax_nopriv_wd_product_by_id', 'wd_product_by_id');
