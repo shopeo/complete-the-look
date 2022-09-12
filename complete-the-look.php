@@ -16,6 +16,7 @@
 require_once 'vendor/autoload.php';
 
 use Shopeo\CompleteTheLook\CompleteTheLookShortCode;
+use Shopeo\CompleteTheLook\RecommenderSearch;
 
 if (!defined('ABSPATH')) {
     exit();
@@ -101,3 +102,15 @@ if (!function_exists('wd_woocommerce_ajax_add_to_cart')) {
 
 add_action('wp_ajax_wd_woocommerce_ajax_add_to_cart', 'wd_woocommerce_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_wd_woocommerce_ajax_add_to_cart', 'wd_woocommerce_ajax_add_to_cart');
+
+if (!function_exists('wd_search_by_sku')) {
+    function wd_search_by_sku()
+    {
+        $sku = $_POST['sku'];
+        $search = new RecommenderSearch();
+        wp_send_json($search->search($sku));
+    }
+}
+
+add_action('wp_ajax_wd_search_by_sku', 'wd_search_by_sku');
+add_action('wp_ajax_nopriv_wd_search_by_sku', 'wd_search_by_sku');
