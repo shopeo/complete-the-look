@@ -24,9 +24,9 @@ class CompleteTheLookShortCode
 
     public function render($atts = [], $content = null)
     {
-        $id = array_key_exists('id', $atts) ? $atts['id'] : '';
-        $pid = array_key_exists('pid', $atts) ? $atts['pid'] : '';
-        $sku = array_key_exists('sku', $atts) ? $atts['sku'] : '';
+        $id = (is_array($atts) && array_key_exists('id', $atts)) ? $atts['id'] : '';
+        $pid = (is_array($atts) && array_key_exists('pid', $atts)) ? $atts['pid'] : '';
+        $sku = (is_array($atts) && array_key_exists('sku', $atts)) ? $atts['sku'] : '';
         $product = null;
         if ($pid && !$sku) {
             $product = new WC_Product($pid);
