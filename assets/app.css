@@ -1,4 +1,5 @@
 .wd_product {
+    display: inline-block;
     position: relative;
 }
 
@@ -33,5 +34,25 @@
 }
 
 .wd_display_block {
+    display: block !important;
+}
+
+.wd_plus {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+}
+
+.wd_plus span {
+    text-align: center;
+    line-height: 36px;
     display: block;
+    font-size: 32px;
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: #2271b1;
+    border: 2px solid white;
+    border-radius: 50%;
 }

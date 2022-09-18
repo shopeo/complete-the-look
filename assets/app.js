@@ -5,45 +5,26 @@
         });
 
         $(document).on('click', '.wd_product', function (e) {
-            e.stopPropagation();
-            let id = $(this).attr('id');
-            $('.wd_product_info').removeClass('wd_display_block');
-            $(this).find('.wd_product_info').addClass('wd_display_block');
-            if ($('.wd_recommender').length > 0) {
-                $('.wd_recommender').data('target', id);
-                let sku = $(this).data('sku');
-                let data = {
-                    action: 'wd_search_by_sku',
-                    sku: sku,
-                };
-                $.ajax({
-                    url: complete_the_look_plugin_ajax.ajax_url,
-                    type: 'POST',
-                    data: data,
-                    success: function (data) {
-                        let html = '';
-                        let has_link = $('.wd_recommender').data('link') > 0;
-                        for (let item of data) {
-                            if (has_link) {
-                                html += '<a href="' + item.permalink + '">'
-                            } else {
-                                html += '<div class="wd_recommender_item_box" data-product-id="' + item.product_id + '">';
-                            }
-                            html += '<div class="wd_recommender_item">';
-                            html += '<img src="' + item.image_src + '"/>';
-                            html += '<span>' + item.price_html + '</span>';
-                            html += '</div>';
-                            if (has_link) {
-                                html += '</a>';
-                            } else {
-                                html += '</div>';
-                            }
+                e.stopPropagation();
+                let id = $(this).attr('id');
+                if ($('.wd_recommender').length > 0) {
+                    $('.wd_recommender').data('target', id);
+                    let sku = $(this).data('sku');
+                    let data = {
+                        action: 'wd_search_by_sku',
+                        sku: sku,
+                    };
+                    $.ajax({
+                        url: complete_the_look_plugin_ajax.ajax_url,
+                        type: 'POST',
+                        data: data,
+                        success: function (data) {
+                            $('.wd_recommender .wd_recommender_list').html(data.html);
                         }
-                        $('.wd_recommender .wd_recommender_list').html(html);
-                    }
-                });
+                    });
+                }
             }
-        })
+        );
 
         $(document).on('click', '.wd_add_to_cart_btn', function (e) {
             e.preventDefault();
@@ -70,8 +51,9 @@
             })
         });
 
-        $(document).on('click', '.wd_recommender .wd_recommender_item_box', function (e) {
-            let product_id = $(this).data('product-id');
+        $(document).on('click', '.wd_recommender.click-active .wd_recommender_list a.woocommerce-loop-product__link', function (e) {
+            e.stopPropagation();
+            let product_id = $(this).parent('.product').find('.add_to_cart_button').data('product_id');
             let target_id = $('.wd_recommender').data('target');
             let target = $('#' + target_id);
             let data = {
@@ -87,6 +69,22 @@
                     target.parent('div').html(data.product);
                 }
             });
+            return false;
+        });
+
+        $(document).on('mouseleave', '.wd_product', function () {
+            $('.wd_plus').removeClass('wd_display_block');
+        });
+
+        $(document).on('mouseenter', '.wd_product', function () {
+            $('.wd_plus').removeClass('wd_display_block');
+            $(this).find('.wd_plus').addClass('wd_display_block');
+        });
+
+        $(document).on('click', '.wd_plus', function (e) {
+            e.stopPropagation();
+            $('.wd_product_info').removeClass('wd_display_block');
+            $(this).parent('.wd_product').find('.wd_product_info').addClass('wd_display_block');
         });
     });
 })(jQuery);

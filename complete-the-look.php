@@ -108,7 +108,23 @@ if (!function_exists('wd_search_by_sku')) {
     {
         $sku = $_POST['sku'];
         $search = new RecommenderSearch();
-        wp_send_json($search->search($sku));
+        $result = $search->search($sku);
+        ob_start();
+        ?>
+        <ul class="products related">
+            <?php
+            foreach ($result as $item) {
+                $post_object = get_post($item->product_id);
+                setup_postdata($GLOBALS['post'] =& $post_object);
+                wc_get_template_part('content', 'product');
+            }
+            ?>
+        </ul>
+        <?php
+        wp_reset_postdata();
+        $body = ob_get_contents();
+        ob_end_clean();
+        wp_send_json(array('html' => $body));
     }
 }
 
@@ -123,6 +139,7 @@ if (!function_exists('wd_product_by_id')) {
         $product = new WC_Product($product_id);
         $body = '<div id="' . $target_id . '" class="wd_product" data-product-id="' . $product->get_id() . '" data-sku="' . $product->get_sku() . '">';
         $body .= $product->get_image();
+        $body .= '<div class="wd_plus"><span>+</span></div>';
         $body .= '<div class="wd_product_info">';
         $body .= '<div class="wd_product_name">' . $product->get_name() . '</div>';
         $body .= '<div class="wd_product_image">' . $product->get_image() . '</div>';

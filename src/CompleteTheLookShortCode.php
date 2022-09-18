@@ -37,6 +37,7 @@ class CompleteTheLookShortCode
 
         $body = '<div id="' . $id . '" class="wd_product" data-product-id="' . $product->get_id() . '" data-sku="' . $product->get_sku() . '">';
         $body .= $product->get_image();
+        $body .= '<div class="wd_plus"><span>+</span></div>';
         $body .= '<div class="wd_product_info">';
         $body .= '<div class="wd_product_name">' . $product->get_name() . '</div>';
         $body .= '<div class="wd_product_image">' . $product->get_image() . '</div>';
